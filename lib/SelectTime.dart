@@ -13,7 +13,7 @@ class _SelectTimeState extends State<SelectTime> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black,
+      color: Colors.blueGrey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -32,8 +32,13 @@ class _SelectTimeState extends State<SelectTime> {
                     haptics: true,
                     onChanged: (value) => setState(() => _currentHours = value),
                   ),
-                  /*    Divider(color: Colors.grey, height: 32),
-                  SizedBox(height: 16),
+                  // Divider(
+                  //   color: Colors.white,
+                  //   height: 32,
+                  //   thickness: 5,
+                  // ),
+                  // SizedBox(height: 16),
+                  /*
                   Text('Horizontal', style: Theme.of(context).textTheme.headline6),
                   NumberPicker(
                     value: _currentHorizontalIntValue,
@@ -70,6 +75,11 @@ class _SelectTimeState extends State<SelectTime> {
                     ],
                   ),*/
                 ],
+              ),
+              Divider(
+                color: Colors.white,
+                height: 32,
+                thickness: 5,
               ),
               Column(
                 children: <Widget>[
