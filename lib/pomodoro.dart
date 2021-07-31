@@ -73,8 +73,10 @@ class _maintimeState extends State<maintime> {
     print(widget._time);
     return Container(
         child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.width / 3,
+        ),
         CircularCountDownTimer(
           // Countdown duration in Seconds.
           duration: widget._time * 60,
@@ -98,13 +100,13 @@ class _maintimeState extends State<maintime> {
           ringGradient: null,
 
           // Filling Color for Countdown Widget.
-          fillColor: Colors.purpleAccent[100]!,
+          fillColor: Colors.cyan,
 
           // Filling Gradient for Countdown Widget.
           fillGradient: null,
 
           // Background Color for Countdown Widget.
-          backgroundColor: Colors.purple[500],
+          backgroundColor: Colors.teal,
 
           // Background Gradient for Countdown Widget.
           backgroundGradient: null,
@@ -120,7 +122,7 @@ class _maintimeState extends State<maintime> {
               fontSize: 33.0, color: Colors.white, fontWeight: FontWeight.bold),
 
           // Format for the Countdown Text.
-          textFormat: CountdownTextFormat.MM_SS,
+          textFormat: CountdownTextFormat.HH_MM_SS,
 
           // Handles Countdown Timer (true for Reverse Countdown (max to 0), false for Forward Countdown (0 to max)).
           isReverse: true,
@@ -151,6 +153,7 @@ class _maintimeState extends State<maintime> {
             widget._controller.restart(duration: widget._time);
           },
         ),
+        SizedBox(height: MediaQuery.of(context).size.width / 4),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

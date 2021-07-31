@@ -44,6 +44,10 @@ class _timepickerState extends State<timepicker> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text('Focus Time'),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -54,7 +58,7 @@ class _timepickerState extends State<timepicker> {
                     textStyle: TextStyle(color: Colors.white),
                     value: _currentHours,
                     minValue: 0,
-                    maxValue: 9,
+                    maxValue: 3,
                     step: 1,
                     haptics: false,
                     selectedTextStyle:
@@ -89,6 +93,10 @@ class _timepickerState extends State<timepicker> {
               ),
             ],
           ),
+          Text('Break'),
+          SizedBox(
+            height: 10,
+          ),
           NumberPicker(
             axis: Axis.horizontal,
             textStyle: TextStyle(color: Colors.white),
@@ -103,7 +111,11 @@ class _timepickerState extends State<timepicker> {
             haptics: false,
             onChanged: (value) => setState(() => _resttime = value),
           ),
+          SizedBox(
+            height: 30,
+          ),
           IconButton(
+            iconSize: 40,
             onPressed: addtime,
             icon: Icon(Icons.add_alarm_sharp),
           ),
