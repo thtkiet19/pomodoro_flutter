@@ -37,6 +37,7 @@ class timepicker extends StatefulWidget {
 class _timepickerState extends State<timepicker> {
   int _currentHours = 0;
   int _currentMinutes = 45;
+  int _resttime = 10;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,8 +75,8 @@ class _timepickerState extends State<timepicker> {
                     value: _currentMinutes,
                     selectedTextStyle:
                         TextStyle(color: Colors.teal, fontSize: 30),
-                    minValue: 0,
-                    maxValue: 60,
+                    minValue: 1,
+                    maxValue: 59,
                     decoration: BoxDecoration(
                       border: Border(top: BorderSide(), bottom: BorderSide()),
                     ),
@@ -88,6 +89,20 @@ class _timepickerState extends State<timepicker> {
               ),
             ],
           ),
+          NumberPicker(
+            axis: Axis.horizontal,
+            textStyle: TextStyle(color: Colors.white),
+            value: _resttime,
+            selectedTextStyle: TextStyle(color: Colors.teal, fontSize: 30),
+            minValue: 1,
+            maxValue: 20,
+            decoration: BoxDecoration(
+              border: Border(left: BorderSide(), right: BorderSide()),
+            ),
+            step: 1,
+            haptics: false,
+            onChanged: (value) => setState(() => _resttime = value),
+          ),
           IconButton(
             onPressed: addtime,
             icon: Icon(Icons.add_alarm_sharp),
@@ -99,8 +114,7 @@ class _timepickerState extends State<timepicker> {
 
   void addtime() {
     widget.timestampe = _currentHours * 60 + _currentMinutes;
-    Navigator.pushNamed(context, '/home', arguments: {
-      'time': widget.timestampe,
-    });
+    Navigator.pushNamed(context, '/home',
+        arguments: {'time': widget.timestampe, 'rest': _resttime});
   }
 }
