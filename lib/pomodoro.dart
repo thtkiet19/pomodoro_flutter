@@ -31,7 +31,6 @@ class _pomodoroState extends State<pomodoro> {
                   time: data['time'],
                   restTime: data['rest'],
                 ),
-                Text(data['rest'].toString()),
               ],
             ),
           )),
@@ -50,8 +49,6 @@ class maintime extends StatefulWidget {
   late int _time = 0;
 
   CountDownController _controller = CountDownController();
-  int _duration = 10;
-
   maintime({Key? key, required int this.time, required this.restTime})
       : super(key: key);
 
@@ -80,7 +77,7 @@ class _maintimeState extends State<maintime> {
       children: [
         CircularCountDownTimer(
           // Countdown duration in Seconds.
-          duration: widget._time,
+          duration: widget._time * 60,
 
           // Countdown initial elapsed Duration in Seconds.
           initialDuration: 0,
@@ -123,7 +120,7 @@ class _maintimeState extends State<maintime> {
               fontSize: 33.0, color: Colors.white, fontWeight: FontWeight.bold),
 
           // Format for the Countdown Text.
-          textFormat: CountdownTextFormat.S,
+          textFormat: CountdownTextFormat.MM_SS,
 
           // Handles Countdown Timer (true for Reverse Countdown (max to 0), false for Forward Countdown (0 to max)).
           isReverse: true,
@@ -147,14 +144,13 @@ class _maintimeState extends State<maintime> {
           onComplete: () {
             // Here, do whatever you want
             print('Countdown Ended');
-            widget._time = timealter(widget.counter);
             print(widget.counter);
             widget.counter++;
+            widget._time = timealter(widget.counter);
             print(widget._time);
             widget._controller.restart(duration: widget._time);
           },
         ),
-        Text('counter: ${widget.counter}'),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
