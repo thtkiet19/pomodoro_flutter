@@ -1,116 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-class SelectTime extends StatefulWidget {
+//TODO: clean up the widgets
+class SelectTimer extends StatefulWidget {
+  // late final int timestampe;
+  // SelectTimer({required Key Key, required this.timestampe});
+
   @override
-  _SelectTimeState createState() => _SelectTimeState();
+  _SelectTimerState createState() => _SelectTimerState();
 }
 
-class _SelectTimeState extends State<SelectTime> {
+class _SelectTimerState extends State<SelectTimer> {
   int _currentHours = 0;
+
   int _currentMinutes = 45;
+  int timestampe = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blueGrey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: <Widget>[
-                  Text('Hours', style: TextStyle(color: Colors.white)),
-                  NumberPicker(
-                    textStyle: TextStyle(color: Colors.white),
-                    value: _currentHours,
-                    minValue: 0,
-                    maxValue: 60,
-                    step: 1,
-                    haptics: true,
-                    onChanged: (value) => setState(() => _currentHours = value),
-                  ),
-                  // Divider(
-                  //   color: Colors.white,
-                  //   height: 32,
-                  //   thickness: 5,
-                  // ),
-                  // SizedBox(height: 16),
-                  /*
-                  Text('Horizontal', style: Theme.of(context).textTheme.headline6),
-                  NumberPicker(
-                    value: _currentHorizontalIntValue,
-                    minValue: 0,
-                    maxValue: 100,
-                    step: 10,
-                    itemHeight: 100,
-                    axis: Axis.horizontal,
-                    onChanged: (value) =>
-                        setState(() => _currentHorizontalIntValue = value),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.black26),
-                    ),
-                  ),
+    return DefaultTabController(
+      length: 1,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.teal,
+          title: Center(
+            child: Text('Pomodoro'),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Container(
+              color: Colors.blueGrey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.remove),
-                        onPressed: () => setState(() {
-                          final newValue = _currentHorizontalIntValue - 10;
-                          _currentHorizontalIntValue = newValue.clamp(0, 100);
-                        }),
+                      Column(
+                        children: <Widget>[
+                          Text('Hours', style: TextStyle(color: Colors.white)),
+                          NumberPicker(
+                            textStyle: TextStyle(color: Colors.white),
+                            value: _currentHours,
+                            minValue: 0,
+                            maxValue: 60,
+                            step: 1,
+                            haptics: true,
+                            selectedTextStyle:
+                                TextStyle(color: Colors.teal, fontSize: 30),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                  top: BorderSide(), bottom: BorderSide()),
+                            ),
+                            onChanged: (value) =>
+                                setState(() => _currentHours = value),
+                          ),
+                        ],
                       ),
-                      Text('Current horizontal int value: $_currentHorizontalIntValue'),
-                      IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: () => setState(() {
-                          final newValue = _currentHorizontalIntValue + 20;
-                          _currentHorizontalIntValue = newValue.clamp(0, 100);
-                        }),
-                      ),
+                      SizedBox(width: 15),
+                      Column(
+                        children: <Widget>[
+                          Text('Minutes',
+                              style: TextStyle(color: Colors.white)),
+                          NumberPicker(
+                            textStyle: TextStyle(color: Colors.white),
+                            value: _currentMinutes,
+                            selectedTextStyle:
+                                TextStyle(color: Colors.teal, fontSize: 30),
+                            minValue: 0,
+                            maxValue: 60,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                  top: BorderSide(), bottom: BorderSide()),
+                            ),
+                            step: 1,
+                            haptics: true,
+                            onChanged: (value) =>
+                                setState(() => _currentMinutes = value),
+                          ),
+                        ],
+                      )
                     ],
-                  ),*/
-                ],
-              ),
-              Divider(
-                color: Colors.white,
-                height: 32,
-                thickness: 5,
-              ),
-              Column(
-                children: <Widget>[
-                  Text('Minutes', style: TextStyle(color: Colors.white)),
-                  NumberPicker(
-                    textStyle: TextStyle(color: Colors.white),
-                    value: _currentMinutes,
-                    minValue: 0,
-                    maxValue: 60,
-                    step: 1,
-                    haptics: true,
-                    onChanged: (value) =>
-                        setState(() => _currentMinutes = value),
                   ),
+                  TextButton(
+                    onPressed: search(),
+                    child: Text('begin'),
+                  )
                 ],
-              )
-            ],
-          ),
-          IconButton(
-              onPressed: search(),
-              icon: Icon(
-                Icons.add,
-                color: Colors.lightBlue,
-                size: 30,
-              ))
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-}
 
-search() {
-  print('search');
+  search() {
+    timestampe = _currentHours * 60 + _currentMinutes;
+    Navigator.pushReplacementNamed(context, '/home',
+        arguments: {'timestampe': timestampe});
+  }
 }
