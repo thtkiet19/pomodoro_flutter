@@ -1,6 +1,7 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 
 class pomodoro extends StatefulWidget {
   const pomodoro({Key? key}) : super(key: key);
@@ -11,7 +12,14 @@ class pomodoro extends StatefulWidget {
 
 class _pomodoroState extends State<pomodoro> {
   Map data = {};
+  late Color bkColor;
+  @override
+  void initState() {
+    bkColor = Colors.blueGrey;
+    super.initState();
+  }
 
+  @override
   Widget build(BuildContext context) {
     data =
         data.isEmpty ? ModalRoute.of(context)!.settings.arguments as Map : data;
@@ -21,12 +29,75 @@ class _pomodoroState extends State<pomodoro> {
         title: Center(
           child: Text('Pomodoro'),
         ),
+        centerTitle: true,
       ),
       body: Container(
-          color: Colors.blueGrey,
+          color: bkColor,
           child: Center(
             child: Column(
               children: [
+                Container(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: ListTile(
+                    title: Text('Background\'s Color '),
+                    subtitle: Text(
+                      '${ColorTools.nameThatColor(bkColor)}',
+                    ),
+                    trailing: ColorIndicator(
+                        hasBorder: true,
+                        width: 40,
+                        height: 40,
+                        borderRadius: 3,
+                        borderColor: Color(bkColor.value * 2),
+                        color: bkColor,
+                        elevation: 1,
+                        onSelectFocus: false,
+                        onSelect: () async {
+                          // Wait for the dialog to return color selection result.
+                          final Color newColor = await showColorPickerDialog(
+                            // The dialog needs a context, we pass it in.
+                            context,
+                            // We use the dialogSelectColor, as its starting color.
+                            bkColor,
+                            title: Text('ColorPicker',
+                                style: Theme.of(context).textTheme.headline6),
+                            width: 40,
+                            height: 40,
+                            spacing: 0,
+                            runSpacing: 0,
+                            borderRadius: 0,
+                            wheelDiameter: 165,
+                            enableOpacity: true,
+                            showColorCode: true,
+                            colorCodeHasColor: true,
+                            pickersEnabled: <ColorPickerType, bool>{
+                              ColorPickerType.wheel: true,
+                            },
+                            copyPasteBehavior:
+                                const ColorPickerCopyPasteBehavior(
+                              copyButton: true,
+                              pasteButton: true,
+                              longPressMenu: true,
+                            ),
+                            actionButtons: const ColorPickerActionButtons(
+                              okButton: true,
+                              closeButton: true,
+                              dialogActionButtons: false,
+                            ),
+                            constraints: const BoxConstraints(
+                                minHeight: 480, minWidth: 320, maxWidth: 320),
+                          );
+                          // We update the dialogSelectColor, to the returned result
+                          // color. If the dialog was dismissed it actually returns
+                          // the color we started with. The extra update for that
+                          // below does not really matter, but if you want you can
+                          // check if they are equal and skip the update below.
+                          setState(() {
+                            bkColor = newColor;
+                          });
+                        }),
+                  ),
+                ),
                 maintime(
                   time: data['time'],
                   restTime: data['rest'],
@@ -57,6 +128,31 @@ class maintime extends StatefulWidget {
 }
 
 class _maintimeState extends State<maintime> {
+  /// Color in the rim of the circle
+  late Color rimColor; // Color for picker using color select dialog.
+
+  /// Color in the center of the circle
+  late Color mainColor;
+
+  /// background color
+  static const Color guidePrimary = Color(0xFF6200EE);
+  static const Color guidePrimaryVariant = Color(0xFF3700B3);
+  static const Color guideSecondary = Color(0xFF03DAC6);
+  static const Color guideSecondaryVariant = Color(0xFF018786);
+  static const Color guideError = Color(0xFFB00020);
+  static const Color guideErrorDark = Color(0xFFCF6679);
+  static const Color blueBlues = Color(0xFF174378);
+
+  final Map<ColorSwatch<Object>, String> colorsNameMap =
+      <ColorSwatch<Object>, String>{
+    ColorTools.createPrimarySwatch(guidePrimary): 'Guide Purple',
+    ColorTools.createPrimarySwatch(guidePrimaryVariant): 'Guide Purple Variant',
+    ColorTools.createAccentSwatch(guideSecondary): 'Guide Teal',
+    ColorTools.createAccentSwatch(guideSecondaryVariant): 'Guide Teal Variant',
+    ColorTools.createPrimarySwatch(guideError): 'Guide Error',
+    ColorTools.createPrimarySwatch(guideErrorDark): 'Guide Error Dark',
+    ColorTools.createPrimarySwatch(blueBlues): 'Blue blues',
+  };
   int timealter(int counter) {
     if (counter % 2 == 0) {
       print(counter);
@@ -68,14 +164,143 @@ class _maintimeState extends State<maintime> {
   }
 
   @override
+  void initState() {
+    rimColor = const Color(0xFFA239CA);
+    mainColor = Colors.teal;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     widget._time = timealter(widget.counter);
     print(widget._time);
     return Container(
         child: Column(
       children: [
-        SizedBox(
+        /*SizedBox(
           height: MediaQuery.of(context).size.width / 3,
+        ),*/
+        Row(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width / 2.3,
+              child: ListTile(
+                title: const Text('Rim\'s Color'),
+                subtitle: Text(
+                  '${ColorTools.nameThatColor(rimColor)}',
+                ),
+                trailing: ColorIndicator(
+                    width: 40,
+                    height: 40,
+                    borderRadius: 0,
+                    color: rimColor,
+                    elevation: 1,
+                    onSelectFocus: false,
+                    onSelect: () async {
+                      // Wait for the dialog to return color selection result.
+                      final Color newColor = await showColorPickerDialog(
+                        // The dialog needs a context, we pass it in.
+                        context,
+                        // We use the dialogSelectColor, as its starting color.
+                        rimColor,
+                        title: Text('ColorPicker',
+                            style: Theme.of(context).textTheme.headline6),
+                        width: 40,
+                        height: 40,
+                        spacing: 0,
+                        runSpacing: 0,
+                        borderRadius: 0,
+                        wheelDiameter: 165,
+                        enableOpacity: true,
+                        showColorCode: true,
+                        colorCodeHasColor: true,
+                        pickersEnabled: <ColorPickerType, bool>{
+                          ColorPickerType.wheel: true,
+                        },
+                        copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+                          copyButton: true,
+                          pasteButton: true,
+                          longPressMenu: true,
+                        ),
+                        actionButtons: const ColorPickerActionButtons(
+                          okButton: true,
+                          closeButton: true,
+                          dialogActionButtons: false,
+                        ),
+                        constraints: const BoxConstraints(
+                            minHeight: 480, minWidth: 320, maxWidth: 320),
+                      );
+                      // We update the dialogSelectColor, to the returned result
+                      // color. If the dialog was dismissed it actually returns
+                      // the color we started with. The extra update for that
+                      // below does not really matter, but if you want you can
+                      // check if they are equal and skip the update below.
+                      setState(() {
+                        rimColor = newColor;
+                      });
+                    }),
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width / 2.3,
+              child: ListTile(
+                title: const Text('Main\'s Color'),
+                subtitle: Text(
+                  '${ColorTools.nameThatColor(mainColor)}',
+                ),
+                trailing: ColorIndicator(
+                    width: 40,
+                    height: 40,
+                    borderRadius: 0,
+                    color: mainColor,
+                    elevation: 1,
+                    onSelectFocus: false,
+                    onSelect: () async {
+                      // Wait for the dialog to return color selection result.
+                      final Color newColor = await showColorPickerDialog(
+                        // The dialog needs a context, we pass it in.
+                        context,
+                        // We use the dialogSelectColor, as its starting color.
+                        mainColor,
+                        title: Text('ColorPicker',
+                            style: Theme.of(context).textTheme.headline6),
+                        width: 40,
+                        height: 40,
+                        spacing: 0,
+                        runSpacing: 0,
+                        borderRadius: 0,
+                        wheelDiameter: 165,
+                        enableOpacity: true,
+                        showColorCode: true,
+                        colorCodeHasColor: true,
+                        pickersEnabled: <ColorPickerType, bool>{
+                          ColorPickerType.wheel: true,
+                        },
+                        copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+                          copyButton: true,
+                          pasteButton: true,
+                          longPressMenu: true,
+                        ),
+                        actionButtons: const ColorPickerActionButtons(
+                          okButton: true,
+                          closeButton: true,
+                          dialogActionButtons: false,
+                        ),
+                        constraints: const BoxConstraints(
+                            minHeight: 480, minWidth: 320, maxWidth: 320),
+                      );
+                      // We update the dialogSelectColor, to the returned result
+                      // color. If the dialog was dismissed it actually returns
+                      // the color we started with. The extra update for that
+                      // below does not really matter, but if you want you can
+                      // check if they are equal and skip the update below.
+                      setState(() {
+                        mainColor = newColor;
+                      });
+                    }),
+              ),
+            ),
+          ],
         ),
         CircularCountDownTimer(
           // Countdown duration in Seconds.
@@ -100,13 +325,13 @@ class _maintimeState extends State<maintime> {
           ringGradient: null,
 
           // Filling Color for Countdown Widget.
-          fillColor: Colors.cyan,
+          fillColor: rimColor,
 
           // Filling Gradient for Countdown Widget.
           fillGradient: null,
 
           // Background Color for Countdown Widget.
-          backgroundColor: Colors.teal,
+          backgroundColor: mainColor,
 
           // Background Gradient for Countdown Widget.
           backgroundGradient: null,
@@ -150,7 +375,7 @@ class _maintimeState extends State<maintime> {
             widget.counter++;
             widget._time = timealter(widget.counter);
             print(widget._time);
-            widget._controller.restart(duration: widget._time);
+            widget._controller.restart(duration: widget._time * 60);
           },
         ),
         SizedBox(height: MediaQuery.of(context).size.width / 4),

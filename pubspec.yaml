@@ -30,6 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   numberpicker: ^2.1.1
   circular_countdown_timer: ^0.2.0
+  flex_color_picker: ^2.1.2
+
 
 
 dev_dependencies:
