@@ -38,6 +38,7 @@ class _pomodoroState extends State<pomodoro> {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.height / 10,
                   child: ListTile(
                     title: Text('Background\'s Color '),
                     subtitle: Text(
@@ -175,6 +176,7 @@ class _maintimeState extends State<maintime> {
     widget._time = timealter(widget.counter);
     print(widget._time);
     return Container(
+        // height: MediaQuery.of(context).size.width / 1,
         child: Column(
       children: [
         /*SizedBox(
@@ -184,6 +186,7 @@ class _maintimeState extends State<maintime> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width / 2.3,
+              height: MediaQuery.of(context).size.height / 10,
               child: ListTile(
                 title: const Text('Rim\'s Color'),
                 subtitle: Text(
@@ -243,6 +246,7 @@ class _maintimeState extends State<maintime> {
             ),
             Container(
               width: MediaQuery.of(context).size.width / 2.3,
+              height: MediaQuery.of(context).size.height / 10,
               child: ListTile(
                 title: const Text('Main\'s Color'),
                 subtitle: Text(
@@ -378,7 +382,7 @@ class _maintimeState extends State<maintime> {
             widget._controller.restart(duration: widget._time * 60);
           },
         ),
-        SizedBox(height: MediaQuery.of(context).size.width / 4),
+        SizedBox(height: MediaQuery.of(context).size.height / 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -396,7 +400,7 @@ class _maintimeState extends State<maintime> {
                 onPressed: () => widget._controller.pause(),
                 color: Colors.red),
             SizedBox(
-              width: 5,
+              width: MediaQuery.of(context).size.width / 200,
             ),
             MaterialButton(
                 child: Container(
